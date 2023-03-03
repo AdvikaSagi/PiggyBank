@@ -2,27 +2,36 @@
 
 
 def addMoney():
-    name = input('Enter the name of the person whose account yur adding money to: ')
+    num = input('Enter your account number: ')
     money = int(input('Enter the amount your adding: '))
     fileHandler = open('account.txt','r')
     files = fileHandler.readlines()
     for line in files:
-        if name in line:
-          details= line.split(",")
+        details= line.split(",")
+        if num == details[0]:
+            d = int(details[-1])
+            d += money
+            amount = str(d)
+            details[-1] = amount
+            print('Your new balance is ', details[-1])
     
-    d = int(details[-1]) + money
+            
+          
+    
+    
     
 
 
 def seeAccount():
-    name = input("Enter the first name of the person's balance you want to see: ")
+    num = input("Enter your account number: ")
     fileHandler = open('account.txt','r')
     files = fileHandler.readlines()
     for line in files:
-        if name in line:
-          details= line.split(",")
+        details= line.split(",")
+        if num == details[0]:
+          
           #print(details)
-          print(f"The balance for {name} is : ",details[-1])
+          print(f"The balance for account number {num} is : ",details[-1])
 
 
 def createAccount():
@@ -37,10 +46,14 @@ def createAccount():
     readfile.close()
     writeAccount = open('accountNumber.txt', 'w')
     writeAccount.write(accountNum)
-    account = accountNum+','+ first_name+','+ surename+','+ number+','+ balance
-    fileHandling = open('account.txt', 'w')
+    account = accountNum+','+ first_name+','+ surename+','+ number+','+ accountNum + '.txt' + '\n'
+    fileHandling = open('account.txt', 'a')
     fileHandling.write(account)
     fileHandling.close()
+    print('Your account number is ', accountNum)
+    f = open('bank_balance/' + accountNum + '.txt', 'w')
+    f.write(balance)
+    f.close()
 
 
 def display():
@@ -53,7 +66,6 @@ def display():
         2. Add Money to account
         3. Withdraw Money from account
         4. Check balance in account
-        5. Delete account(don't choose yet)
         5. Exit""")
         option = input("Enter your option: ")
 
@@ -66,6 +78,9 @@ def display():
 
         if option == '1':
             createAccount()
+            showScreen = False
+        if option == '2':
+            addMoney()
             showScreen = False
 
         if option != '6':
