@@ -9,13 +9,36 @@ def addMoney():
     for line in files:
         details= line.split(",")
         if num == details[0]:
-            d = int(details[-1])
-            d += money
-            amount = str(d)
-            details[-1] = amount
-            print('Your new balance is ', details[-1])
-    
-            
+            f = open('bank_balance/' + details[0] + '.txt', 'r')
+            d = f.readline()
+            a = int(d) 
+            a += money
+            amount = str(a)
+            balance_file = open('bank_balance/' + details[0] + '.txt', 'w')
+            balance_file.write(amount)
+            balance_file.close()
+            read = open('bank_balance/' + details[0] + '.txt', 'r')
+            print('Your new balance is ', read.read())
+
+
+def withdrawMoney():
+    num = input('Enter your account number: ')
+    money = int(input('Enter the amount your withdrawing: '))
+    fileHandler = open('account.txt','r')
+    files = fileHandler.readlines()
+    for line in files:
+        details= line.split(",")
+        if num == details[0]:
+            f = open('bank_balance/' + details[0] + '.txt', 'r')
+            d = f.readline()
+            a = int(d) 
+            a -= money
+            amount = str(a)
+            balance_file = open('bank_balance/' + details[0] + '.txt', 'w')
+            balance_file.write(amount)
+            balance_file.close()
+            read = open('bank_balance/' + details[0] + '.txt', 'r')
+            print('Your new balance is ', read.read())
           
     
     
@@ -29,16 +52,18 @@ def seeAccount():
     for line in files:
         details= line.split(",")
         if num == details[0]:
+          file = open('bank_balance/' + details[0] + '.txt', 'r')
+          read = file.read()
           
           #print(details)
-          print(f"The balance for account number {num} is : ",details[-1])
+          print(f"The balance for account number {num} is : ", read)
 
 
 def createAccount():
     first_name = input('Enter your first name: ')
     surename = input('Enter you surename: ')
     number = input('Enter a phone number: ')
-    balance = input('Enter the the amount of money in ypur accaount: ')
+    balance = input('Enter the the amount of money in your account: ')
     readfile = open('accountNumber.txt', 'r')
     accountNumber = readfile.read()
     aNumber = int(accountNumber) + 1
@@ -81,6 +106,9 @@ def display():
             showScreen = False
         if option == '2':
             addMoney()
+            showScreen = False
+        if option == '3':
+            withdrawMoney()
             showScreen = False
 
         if option != '6':
